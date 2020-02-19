@@ -51,14 +51,14 @@ func WithConfigFile(file string) Option {
 
 func getDefaultConfigFile() string {
 	var (
-		repoPath   = filepath.Join(os.Getenv("GOPATH"), "src/github.com/vilbert/go-skeleton")
-		configPath = filepath.Join(repoPath, "files/etc/skeleton/skeleton.environment.yaml")
+		repoPath   = filepath.Join(os.Getenv("GOPATH"), "src/go-tutorial-2020")
+		configPath = filepath.Join(repoPath, "files/etc/go-tutorial-2020/go-tutorial-2020.development.yaml")
 		env        = os.Getenv("ENV")
 	)
 
 	if env != "" {
 		if env == envStaging {
-			configPath = "files/etc/skeleton/skeleton.environment.yaml"
+			configPath = "./go-tutorial-2020.staging.yaml"
 		}
 	}
 	return configPath

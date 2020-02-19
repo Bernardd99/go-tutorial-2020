@@ -6,15 +6,15 @@ import (
 	"github.com/vilbert/go-skeleton/pkg/grace"
 )
 
-// SkeletonHandler ...
-type SkeletonHandler interface {
-	SkeletonHandler(w http.ResponseWriter, r *http.Request)
+// UserHandler ...
+type UserHandler interface {
+	UserHandler(w http.ResponseWriter, r *http.Request)
 }
 
 // Server ...
 type Server struct {
-	server   *http.Server
-	Skeleton SkeletonHandler
+	server *http.Server
+	User   UserHandler
 }
 
 // Serve is serving HTTP gracefully on port x ...

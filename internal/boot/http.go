@@ -4,44 +4,47 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/jmoiron/sqlx"
-	"github.com/vilbert/go-skeleton/internal/config"
+	"go-tutorial-2020/internal/config"
 
-	skeletonData "github.com/vilbert/go-skeleton/internal/data/skeleton"
-	skeletonServer "github.com/vilbert/go-skeleton/internal/delivery/http"
-	skeletonHandler "github.com/vilbert/go-skeleton/internal/delivery/http/skeleton"
-	skeletonService "github.com/vilbert/go-skeleton/internal/service/skeleton"
+	"github.com/jmoiron/sqlx"
+
+	userData "go-tutorial-2020/internal/data/user"
+	server "go-tutorial-2020/internal/delivery/http"
+	userHandler "go-tutorial-2020/internal/delivery/http/user"
+	userService "go-tutorial-2020/internal/service/user"
 )
 
 // HTTP will load configuration, do dependency injection and then start the HTTP server
 func HTTP() error {
 	var (
-		s   skeletonServer.Server    // HTTP Server Object
-		sd  skeletonData.Data        // BridgingProduct domain data layer
-		ss  skeletonService.Service  // BridgingProduct domain service layer
-		sh  *skeletonHandler.Handler // BridgingProduct domain handler
-		cfg *config.Config           // Configuration object
+		s   server.Server        // HTTP Server Object
+		ud  userData.Data        // User domain data layer
+		us  userService.Service  // User domain service layer
+		uh  *userHandler.Handler // User domain handler
+		cfg *config.Config       // Configuration object
 	)
 
+	// Get configuration
 	err := config.Init()
 	if err != nil {
 		log.Fatalf("[CONFIG] Failed to initialize config: %v", err)
 	}
 	cfg = config.Get()
+
 	// Open MySQL DB Connection
 	db, err := sqlx.Open("mysql", cfg.Database.Master)
 	if err != nil {
 		log.Fatalf("[DB] Failed to initialize database connection: %v", err)
 	}
 
-	// BridgingProduct domain init
-	sd = skeletonData.New(db)
-	ss = skeletonService.New(sd)
-	sh = skeletonHandler.New(ss)
+	// User domain initialization
+	ud = userData.New(db)
+	us = userService.New(ud)
+	uh = userHandler.New(us)
 
 	// Inject service used on handler
-	s = skeletonServer.Server{
-		Skeleton: sh,
+	s = server.Server{
+		User: uh,
 	}
 
 	if err := s.Serve(cfg.Server.Port); err != http.ErrServerClosed {

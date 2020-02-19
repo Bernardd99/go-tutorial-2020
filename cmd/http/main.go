@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 
+	"go-tutorial-2020/internal/boot"
+
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/vilbert/go-skeleton/internal/boot"
 )
 
 func main() {
