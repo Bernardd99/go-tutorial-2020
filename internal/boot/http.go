@@ -47,6 +47,7 @@ func HTTP() error {
 		User: uh,
 	}
 
+	// Error Handling
 	if err := s.Serve(cfg.Server.Port); err != http.ErrServerClosed {
 		return err
 	}
