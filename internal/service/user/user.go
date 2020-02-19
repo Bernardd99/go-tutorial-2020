@@ -4,6 +4,7 @@ import (
 	"context"
 
 	userEntity "go-tutorial-2020/internal/entity/user"
+	"go-tutorial-2020/pkg/errors"
 )
 
 // UserData ...
@@ -25,6 +26,12 @@ func New(userData UserData) Service {
 
 // GetAllUsers ...
 func (s Service) GetAllUsers(ctx context.Context) ([]userEntity.User, error) {
+	// Panggil method GetAllUsers di data layer user
 	users, err := s.userData.GetAllUsers(ctx)
+	// Error handling
+	if err != nil {
+		return users, errors.Wrap(err, "[SERVICE][GetAllUsers]")
+	}
+	// Return users array
 	return users, err
 }

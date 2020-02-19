@@ -2,6 +2,7 @@ package user
 
 import "time"
 
+// JAVA EQUIVALENT -> MODEL
 // User object model
 type User struct {
 	ID       int       `db:"id" json:"user_id"`

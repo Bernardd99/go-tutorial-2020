@@ -45,6 +45,7 @@ func (h *Handler) UserHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Check if request method is GET
 	if r.Method == http.MethodGet {
+		// Ambil semua data user
 		result, err = h.userSvc.GetAllUsers(context.Background())
 	}
 

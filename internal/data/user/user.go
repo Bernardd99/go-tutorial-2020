@@ -62,7 +62,7 @@ func (d *Data) initStmt() {
 	d.stmt = stmts
 }
 
-// GetAllUsers ...
+// GetAllUsers digunakan untuk mengambil semua data user
 func (d Data) GetAllUsers(ctx context.Context) ([]userEntity.User, error) {
 	var (
 		user  userEntity.User
@@ -70,13 +70,18 @@ func (d Data) GetAllUsers(ctx context.Context) ([]userEntity.User, error) {
 		err   error
 	)
 
+	// Query ke database
 	rows, err := d.stmt[getAllUsers].QueryxContext(ctx)
 
+	// Looping seluruh row data
 	for rows.Next() {
+		// Insert row data ke struct user
 		if err := rows.StructScan(&user); err != nil {
 			return users, errors.Wrap(err, "[DATA][GetAllUsers] ")
 		}
+		// Tambahkan struct user ke array user
 		users = append(users, user)
 	}
+	// Return users array
 	return users, err
 }
