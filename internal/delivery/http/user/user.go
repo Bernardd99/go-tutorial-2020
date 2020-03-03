@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	"log"
 	"net/http"
 	"strings"
@@ -43,10 +44,13 @@ func (h *Handler) UserHandler(w http.ResponseWriter, r *http.Request) {
 	// Defer will be run at the end after method finishes
 	defer resp.RenderJSON(w, r)
 
+	switch r.Method {
 	// Check if request method is GET
-	if r.Method == http.MethodGet {
+	case http.MethodGet:
 		// Ambil semua data user
 		result, err = h.userSvc.GetAllUsers(context.Background())
+	default:
+		err = errors.New("400")
 	}
 
 	// If anything from service or data return an error
